@@ -1,0 +1,14 @@
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\bin\Debug\net7.0\Mobile_Store2.Data.deps.json
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\bin\Debug\net7.0\Mobile_Store2.Data.runtimeconfig.json
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\bin\Debug\net7.0\Mobile_Store2.Data.dll
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\bin\Debug\net7.0\Mobile_Store2.Data.pdb
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\Mobile_Store2.Data.csproj.AssemblyReference.cache
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\Mobile_Store2.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\Mobile_Store2.Data.AssemblyInfoInputs.cache
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\Mobile_Store2.Data.AssemblyInfo.cs
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\Mobile_Store2.Data.csproj.CoreCompileInputs.cache
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\Mobile_Store2.Data.dll
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\refint\Mobile_Store2.Data.dll
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\Mobile_Store2.Data.pdb
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\Mobile_Store2.Data.genruntimeconfig.cache
+C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2.Data\obj\Debug\net7.0\ref\Mobile_Store2.Data.dll
