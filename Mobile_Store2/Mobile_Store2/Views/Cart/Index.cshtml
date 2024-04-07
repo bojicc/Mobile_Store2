@@ -1,0 +1,15 @@
+﻿@model CartViewModel
+
+<h1>Shopping Cart</h1>
+<ul>
+    @foreach (var item in Model.CartItems)
+    {
+        <li>
+            <h3>@item.Phone.Model</h3>
+            <p>Price: @item.Phone.Price</p>
+            <p>Quantity: @item.Quantity</p>
+            <a href="@Url.Action("RemoveFromCart", "Cart", new { phoneId = item.Phone.PhoneId })">Remove</a>
+        </li>
+    }
+</ul>
+<p>Total: @Model.TotalPrice</p>

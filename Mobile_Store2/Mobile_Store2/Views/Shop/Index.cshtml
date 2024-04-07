@@ -1,0 +1,15 @@
+﻿@using Mobile_Store2.Data.Models;
+@model IEnumerable<Phone>
+
+<h1>Phones for Sale</h1>
+<ul>
+    @foreach (var phone in Model)
+    {
+        <li>
+            <h3>@phone.Model</h3>
+            <p>@phone.Description</p>
+            <p>Price: @phone.Price</p>
+            <a href="@Url.Action("Details", "Shop", new { id = phone.PhoneId })">Details</a>
+        </li>
+    }
+</ul>

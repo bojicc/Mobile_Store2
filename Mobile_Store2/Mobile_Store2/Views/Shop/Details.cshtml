@@ -1,0 +1,7 @@
+﻿@using Mobile_Store2.Data.Models;
+@model Phone
+
+<h2>@Model.Model</h2>
+<p>@Model.Description</p>
+<p>Price: @Model.Price</p>
+<a href="@Url.Action("AddToCart", "Cart", new { phoneId = Model.PhoneId })">Add to Cart</a>
