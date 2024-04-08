@@ -1,7 +1,7 @@
 ﻿@using Mobile_Store2.Data.Models;
 @model IEnumerable<Phone>
 
-<h1>Phones for Sale</h1>
+@* <h1>Phones for Sale</h1>
 <ul>
     @foreach (var phone in Model)
     {
@@ -12,4 +12,21 @@
             <a href="@Url.Action("Details", "Shop", new { id = phone.PhoneId })">Details</a>
         </li>
     }
-</ul>
+</ul> *@
+
+<div class="row">
+    @foreach (var phone in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@phone.Model</h5>
+                <p class="card-text">@phone.Description.</p>
+                <span class="text-muted">@phone.Price.ToString("C")</span> <br />
+                <a href="@Url.Action("Details", "Shop", new { id = phone.PhoneId })" class="btn btn-sm btn-outline-secondary">View details</a> 
+                <a href="@Url.Action("Index", "Cart", new { id = phone.PhoneId })" class="btn btn-sm btn-outline-secondary">Cart</a>
+
+            </div>
+        </div>
+    }
+</div>

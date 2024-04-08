@@ -4,28 +4,54 @@ using Mobile_Store2.Services.Interfaces;
 
 namespace Mobile_Store2.Controllers
 {
+    //public class ShopController : Controller
+    //{
+    //    private readonly IPhoneService _phoneService;
+
+    //    public ShopController(IPhoneService phoneService)
+    //    {
+    //        _phoneService = phoneService;
+    //    }
+
+    //    public IActionResult Index()
+    //    {
+    //        var phones = _phoneService.GetAllPhones();
+    //        return View(phones);
+    //    }
+
+    //    public IActionResult Details(int id)
+    //    {
+    //        var phone = _phoneService.GetPhoneById(id);
+    //        if (phone == null)
+    //            return NotFound();
+
+    //        return View(phone);
+    //    }
+    //}
+
     public class ShopController : Controller
     {
-        private readonly IPhoneService _phoneService;
+        private readonly IPhoneRepository _phoneRepository;
 
-        public ShopController(IPhoneService phoneService)
+        public ShopController(IPhoneRepository phoneRepository)
         {
-            _phoneService = phoneService;
+            _phoneRepository = phoneRepository;
         }
 
         public IActionResult Index()
         {
-            var phones = _phoneService.GetAllPhones();
+            var phones = _phoneRepository.GetAllPhones();
             return View(phones);
         }
 
         public IActionResult Details(int id)
         {
-            var phone = _phoneService.GetPhoneById(id);
+            var phone = _phoneRepository.GetPhoneById(id);
             if (phone == null)
                 return NotFound();
 
             return View(phone);
         }
+
     }
 }
