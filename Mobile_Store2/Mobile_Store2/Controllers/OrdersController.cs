@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -48,20 +49,51 @@ namespace Mobile_Store2.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
+            string userName = User.Identity.Name;
+
+            // Pass the user's name to the view
+            ViewBag.UserName = userName;
             return View();
         }
 
         // POST: Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("OrderId,UserId,CreateDate")] Order order)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(order);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(order);
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,UserId,CreateDate")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderId,CreateDate")] Order order)
         {
             if (ModelState.IsValid)
             {
+                // Get the currently logged-in user's ID
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // Set the UserId of the order
+                order.UserId = userId;
+
+                // Set the creation date of the order
+                order.CreateDate = DateTime.UtcNow;
+
+                // Add the order to the context
                 _context.Add(order);
+
+                // Save changes to the database
                 await _context.SaveChangesAsync();
+
+                // Redirect to the Index action
                 return RedirectToAction(nameof(Index));
             }
             return View(order);

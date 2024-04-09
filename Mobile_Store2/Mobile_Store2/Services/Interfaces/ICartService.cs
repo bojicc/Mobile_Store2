@@ -6,8 +6,8 @@
         //void AddToCart(int phoneId);
         //void RemoveFromCart(int phoneId);
         //void ClearCart();
-        void AddToCart(int phoneId);
-        void RemoveFromCart(int phoneId);
+        //void AddToCart(int phoneId);
+        //void RemoveFromCart(int phoneId);
         //IEnumerable<CartItem> GetCartItems();
     }
 }

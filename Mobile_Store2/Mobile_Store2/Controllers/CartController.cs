@@ -1,42 +1,89 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mobile_Store2.Data.Models;
+using Mobile_Store2.Data;
 using Mobile_Store2.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mobile_Store2.Controllers
 {
-    //public class CartController : Controller
-    //{
-    //    private readonly ICartService _cartService;
-    //    private readonly IPhoneService _phoneService;
+    public class CartController : Controller
+    {
+        private readonly ApplicationDbContext _context;
 
-    //    public CartController(ICartService cartService, IPhoneService phoneService)
-    //    {
-    //        _cartService = cartService;
-    //        _phoneService = phoneService;
-    //    }
+        public CartController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        private static List<OrderItem> cartItems = new List<OrderItem>();
 
-    //    public IActionResult Index()
-    //    {
-    //        var cartItems = _cartService.GetCartItems();
-    //        return View(cartItems);
-    //    }
 
-    //    [HttpPost]
-    //    public IActionResult AddToCart(int id)
-    //    {
-    //        var phone = _phoneService.GetPhoneById(id);
-    //        if (phone == null)
-    //        {
-    //            return NotFound();
-    //        }
-    //        _cartService.AddToCart(phone);
-    //        return RedirectToAction("Index");
-    //    }
+        public async Task<IActionResult> Index()
+        {
+            var orderItems = await _context.OrderItems.Include(oi => oi.Phone).ToListAsync();
+            return View(orderItems);
+        }
 
-    //    [HttpPost]
-    //    public IActionResult RemoveFromCart(int id)
-    //    {
-    //        _cartService.RemoveFromCart(id);
-    //        return RedirectToAction("Index");
-    //    }
-    //}
+
+        [HttpPost]
+        public async Task<IActionResult> AddToCart(int phoneId, int quantity)
+        {
+            var phone = await _context.Phones.FindAsync(phoneId);
+            if (phone == null)
+            {
+                return NotFound();
+            }
+
+            //if (quantity > phone.Quantity)
+            //{
+            //    return View("../Shop/Details");
+            //}
+
+
+            var orderItem = new OrderItem
+            {
+                PhoneId = phone.PhoneId,
+                Quantity = quantity,
+                UnitPrice = phone.Price,
+                //Phone = phone
+            };
+            _context.OrderItems.Add(orderItem);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(int orderItemId)
+        {
+            var orderItem = await _context.OrderItems.FindAsync(orderItemId);
+            if (orderItem == null)
+            {
+                return NotFound();
+            }
+
+            _context.OrderItems.Remove(orderItem);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<bool> CheckAvailabilityFromDatabase(int phoneId, int quantity)
+        {
+            var product = await _context.Phones.FindAsync(phoneId);
+            if (product != null && product.Quantity >= quantity)
+            {
+                return true; // Product is available
+            }
+            else
+            {
+                return false; // Product is not available
+            }
+        }
+
+        public async Task<JsonResult> CheckAvailability(int phoneId, int quantity)
+        {
+            bool isAvailable = await CheckAvailabilityFromDatabase(phoneId, quantity);
+            return Json(new { available = isAvailable });
+        }
+    }
 }

@@ -14,3 +14,57 @@
 </ul>
 <p>Total: @Model.TotalPrice</p>
  *@
+
+@model List<Mobile_Store2.Data.Models.OrderItem>
+
+
+<h2>Cart</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price per unit</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Phone.Name</td>
+                <td>@item.Phone.Description</td>
+                <td>@item.UnitPrice</td>
+                <td>@item.Quantity</td>
+                <td>@(item.UnitPrice * item.Quantity)</td>
+                <td>
+                    <form asp-action="RemoveFromCart" method="post">
+                        <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td colspan="4">Total</td>
+            <td>@Model.Sum(item => item.UnitPrice * item.Quantity).ToString("C")</td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.Any())
+{
+    <form asp-action="Checkout" method="post">
+        <button type="submit" class="btn btn-success"><a href="@Url.Action("Index", "Checkout")">Checkout</a></button>
+    </form>
+}
+else
+{
+    <p>Your cart is empty.</p>
+}
+
+<a href="@Url.Action("Index", "Shop")">Continue Shopping</a>

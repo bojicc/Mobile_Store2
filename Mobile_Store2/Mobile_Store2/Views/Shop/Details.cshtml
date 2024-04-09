@@ -6,7 +6,7 @@
 <p>Price: @Model.Price</p>
 <a href="@Url.Action("AddToCart", "Cart", new { phoneId = Model.PhoneId })">Add to Cart</a> *@
 
-<h2>@Model.Model</h2>
+@* <h2>@Model.Model</h2>
 
 <div>
     <img src="placeholder_image_url" alt="@Model.Model" style="max-width: 300px; max-height: 300px;" />
@@ -16,8 +16,16 @@
     <p>@Model.Description</p>
     <p>Price: @Model.Price.ToString("C")</p>
     <p>Quantity in stock: @Model.Quantity</p>
+</div> *@
+
+<h2>@Model.Name</h2>
+
+<div>
+    <img src="placeholder_image_url" alt="@Model.Name" style="max-width: 300px; max-height: 300px;" />
 </div>
 
 <div>
-    <!-- Add more details if needed -->
+    <p>@Model.Description</p>
+    <p>Price: @Model.Price.ToString("C")</p>
+    <p>Quantity in stock: @Model.Quantity</p>
 </div>
