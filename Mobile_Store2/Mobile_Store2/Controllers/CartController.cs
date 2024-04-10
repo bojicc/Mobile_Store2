@@ -3,16 +3,19 @@ using Mobile_Store2.Data.Models;
 using Mobile_Store2.Data;
 using Mobile_Store2.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Mobile_Store2.Controllers
 {
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         private static List<OrderItem> cartItems = new List<OrderItem>();
 
@@ -33,11 +36,11 @@ namespace Mobile_Store2.Controllers
                 return NotFound();
             }
 
-            //if (quantity > phone.Quantity)
-            //{
-            //    return View("../Shop/Details");
-            //}
-
+            if (quantity > phone.Quantity)
+            {
+                TempData["ErrorMessage"] = "That number of phones are currenty unavailable.";
+                return RedirectToAction("Index", "Shop", new { id = phoneId });
+            }
 
             var orderItem = new OrderItem
             {
@@ -84,6 +87,28 @@ namespace Mobile_Store2.Controllers
         {
             bool isAvailable = await CheckAvailabilityFromDatabase(phoneId, quantity);
             return Json(new { available = isAvailable });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateQuantity(int orderItemId, int quantity)
+        {
+            var cartItem = _context.OrderItems.Find(orderItemId);
+            await _context.Entry(cartItem).Reference(o => o.Phone).LoadAsync();
+            var phone = cartItem.Phone;
+
+            if (cartItem != null)
+            {
+                cartItem.Quantity = quantity;
+                if (quantity > phone.Quantity)
+                {
+                    TempData["ErrorMessage"] = "That number of phone are unavailable.";
+                    return RedirectToAction("Index", "Cart");
+                }
+
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

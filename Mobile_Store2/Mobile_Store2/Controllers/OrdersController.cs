@@ -67,21 +67,28 @@ namespace Mobile_Store2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId, CreateDate")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderId, UserId, CreateDate")] Order order)
         {
-            var user = await _userManager.GetUserAsync(this.User);
-            order.UserId = user.Id;
-
-            ModelState.ClearValidationState("UserId");
-
-            if (TryValidateModel(order, "UserId"))
+            var currentUser = await _userManager.GetUserAsync(this.User);
+            var orderr = new Order
             {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
-            return View(order);
+                UserId = currentUser.Id,
+                CreateDate = DateTime.UtcNow
+            };
+            return View(orderr);
+
+            //order.UserId = user.Id;
+
+            //ModelState.ClearValidationState("UserId");
+
+            //if (TryValidateModel(order, "UserId"))
+            //{
+            //    _context.Add(order);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
+            //return View(order);
             //if (ModelState.IsValid)
             //{
             //    _context.Add(order);

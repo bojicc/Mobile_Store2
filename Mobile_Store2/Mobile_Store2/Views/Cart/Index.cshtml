@@ -1,22 +1,4 @@
-﻿@* @model CartViewModel
-
-<h1>Shopping Cart</h1>
-<ul>
-    @foreach (var item in Model.CartItems)
-    {
-        <li>
-            <h3>@item.Phone.Model</h3>
-            <p>Price: @item.Phone.Price</p>
-            <p>Quantity: @item.Quantity</p>
-            <a href="@Url.Action("RemoveFromCart", "Cart", new { phoneId = item.Phone.PhoneId })">Remove</a>
-        </li>
-    }
-</ul>
-<p>Total: @Model.TotalPrice</p>
- *@
-
-@model List<Mobile_Store2.Data.Models.OrderItem>
-
+﻿@model List<Mobile_Store2.Data.Models.OrderItem>
 
 <h2>Cart</h2>
 
@@ -37,9 +19,14 @@
             <tr>
                 <td>@item.Phone.Name</td>
                 <td>@item.Phone.Description</td>
-                <td>@item.UnitPrice</td>
-                <td>@item.Quantity</td>
-                <td>@(item.UnitPrice * item.Quantity)</td>
+                <td>@item.UnitPrice.ToString("C")</td>
+                <td>
+                    <form asp-action="UpdateQuantity" asp-controller="Cart" method="post">
+                        <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+                        <input style="width: 60px" type="number" name="quantity" min="1" value="@item.Quantity" onchange="this.form.submit()" />
+                    </form>
+                </td>
+                <td class="subtotal">@((item.UnitPrice * item.Quantity).ToString("C"))</td>
                 <td>
                     <form asp-action="RemoveFromCart" method="post">
                         <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
@@ -47,11 +34,12 @@
                     </form>
                 </td>
             </tr>
+
         }
 
         <tr>
             <td colspan="4">Total</td>
-            <td>@Model.Sum(item => item.UnitPrice * item.Quantity).ToString("C")</td>
+            <td id="total">@Model.Sum(item => item.UnitPrice * item.Quantity).ToString("C")</td>
         </tr>
     </tbody>
 </table>
@@ -59,12 +47,20 @@
 @if (Model.Any())
 {
     <form asp-action="Checkout" method="post">
-        <button type="submit" class="btn btn-success"><a href="@Url.Action("Index", "Checkout")">Checkout</a></button>
+        <a href="@Url.Action("Index", "Checkout")" class="btn btn-success">Checkout</a> <br />
     </form>
 }
 else
 {
-    <p>Your cart is empty.</p>
+    <h5 class="text-center">Your cart is empty.</h5>
 }
+<br>
+<a href="@Url.Action("Index", "Shop")" class="btn btn-primary">Continue Shopping</a>
 
-<a href="@Url.Action("Index", "Shop")">Continue Shopping</a>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        alert("@TempData["ErrorMessage"]");
+    </script>
+}

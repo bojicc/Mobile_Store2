@@ -22,9 +22,10 @@ namespace Mobile_Store2.Controllers
         // GET: Phones
         public async Task<IActionResult> Index()
         {
-              return _context.Phones != null ? 
-                          View(await _context.Phones.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Phones'  is null.");
+            return View(await _context.Phones.ToListAsync());
+            //return _context.Phones != null ? 
+            //              View(await _context.Phones.ToListAsync()) :
+            //              Problem("Entity set 'ApplicationDbContext.Phones'  is null.");
         }
 
         // GET: Phones/Details/5
@@ -33,7 +34,7 @@ namespace Mobile_Store2.Controllers
             if (id == null || _context.Phones == null)
             {
                 return NotFound();
-            }
+            }   
 
             var phone = await _context.Phones
                 .FirstOrDefaultAsync(m => m.PhoneId == id);

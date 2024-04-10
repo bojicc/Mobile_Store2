@@ -30,9 +30,38 @@
         </div>
     }
 </div> *@
-
-
 <h2>Shop</h2>
+
+<div class="row">
+    @foreach (var phone in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@phone.Name</h5>
+                <p class="card-text">@phone.Description.</p>
+                <span class="text-muted">Price per phone: @phone.Price.ToString("C")</span>
+                <p class="text-muted">Avaiable phones: @phone.Quantity</p>
+                <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                    <input type="hidden" name="phoneId" value="@phone.PhoneId" />
+                    <span>Quantity: </span>
+                    <input style="width: 60px" type="number" name="quantity" min="1" value="1" /> <br /> <br />
+                    <a href="@Url.Action("Details", "Shop", new { id = phone.PhoneId })" class="btn btn-secondary">View details</a>
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        alert("@TempData["ErrorMessage"]");
+    </script>
+}
+
+@*<h2>Shop</h2>
 
 <div class="row">
     @foreach (var phone in Model)
@@ -82,4 +111,4 @@
             });
         });
     });
-</script>
+</script> *@
