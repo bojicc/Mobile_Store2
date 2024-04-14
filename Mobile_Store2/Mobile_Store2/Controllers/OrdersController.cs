@@ -36,7 +36,7 @@ namespace Mobile_Store2.Controllers
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Orders == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -67,26 +67,31 @@ namespace Mobile_Store2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId, UserId, CreateDate")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderId, CreateDate")] Order order)
         {
             var currentUser = await _userManager.GetUserAsync(this.User);
-            var orderr = new Order
-            {
-                UserId = currentUser.Id,
-                CreateDate = DateTime.UtcNow
-            };
-            return View(orderr);
+            order.UserId = currentUser.Id;
+
+            ModelState.ClearValidationState("UserId");
+            //var orderr = new Order
+            //{
+            //    UserId = currentUser.Id,
+            //    CreateDate = DateTime.UtcNow
+            //};
+            //return View(orderr);
 
             //order.UserId = user.Id;
 
             //ModelState.ClearValidationState("UserId");
 
-            //if (TryValidateModel(order, "UserId"))
-            //{
-            //    _context.Add(order);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
+            if (TryValidateModel(order, "UserId"))
+            {
+                _context.Add(order);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(order);
             //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", order.UserId);
             //return View(order);
             //if (ModelState.IsValid)
@@ -128,7 +133,7 @@ namespace Mobile_Store2.Controllers
         // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Orders == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -146,7 +151,7 @@ namespace Mobile_Store2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,UserId,CreateDate")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,CreateDate")] Order order)
         {
             if (id != order.OrderId)
             {
@@ -179,7 +184,7 @@ namespace Mobile_Store2.Controllers
         // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Orders == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -199,23 +204,19 @@ namespace Mobile_Store2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Orders == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Orders'  is null.");
-            }
             var order = await _context.Orders.FindAsync(id);
             if (order != null)
             {
                 _context.Orders.Remove(order);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrderExists(int id)
         {
-          return (_context.Orders?.Any(e => e.OrderId == id)).GetValueOrDefault();
+            return _context.Orders.Any(e => e.OrderId == id);
         }
     }
 }

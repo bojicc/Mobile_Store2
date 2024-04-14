@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Mobile_Store2.Data.Models;
 
 namespace Mobile_Store2.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PhonesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -31,7 +33,7 @@ namespace Mobile_Store2.Controllers
         // GET: Phones/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Phones == null)
+            if (id == null)
             {
                 return NotFound();
             }   

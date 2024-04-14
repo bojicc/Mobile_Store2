@@ -4,21 +4,25 @@ using Mobile_Store2.Data;
 using Mobile_Store2.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Mobile_Store2.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ICartService _cartService;
 
-        public CartController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CartController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ICartService cartService)
         {
             _context = context;
             _userManager = userManager;
+            _cartService = cartService;
         }
-        private static List<OrderItem> cartItems = new List<OrderItem>();
 
+        private static List<OrderItem> cartItems = new List<OrderItem>();
 
         public async Task<IActionResult> Index()
         {
@@ -57,9 +61,6 @@ namespace Mobile_Store2.Controllers
 
             if (quantity <= phone.Quantity)
             {
-                //await _context.Entry(activeOrder).Reference(o => o.OrderItems).LoadAsync();
-
-                // Check if the book is already in the cart
                 var existingCartItem = activeOrder.OrderItems.FirstOrDefault(item => item.PhoneId == phoneId);
                 if (existingCartItem != null)
                 {
@@ -67,11 +68,12 @@ namespace Mobile_Store2.Controllers
                 }
                 else
                 {
-                    // If not, add it to the cart
                     activeOrder.OrderItems.Add(new OrderItem { PhoneId = phoneId, Quantity = quantity, Phone = phone });
                 }
                 //phone.Quantity -= quantity;
                 await _context.SaveChangesAsync();
+
+                TempData["CartItemCount"] = _cartService.CartItemCount();
             }
             else
             {
@@ -96,7 +98,11 @@ namespace Mobile_Store2.Controllers
             //_context.OrderItems.Add(orderItem);
             //await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            // Calculate the total count of items in the cart
+             //ViewData["CartItemCount"] = _cartService.CartItemCount();
+            //ViewBag.CartItemCount = _cartService.CartItemCount();
+
+            return RedirectToAction("Index", "Cart");
         }
 
         [HttpPost]
@@ -119,11 +125,11 @@ namespace Mobile_Store2.Controllers
             var product = await _context.Phones.FindAsync(phoneId);
             if (product != null && product.Quantity >= quantity)
             {
-                return true; // Product is available
+                return true; 
             }
             else
             {
-                return false; // Product is not available
+                return false; 
             }
         }
 

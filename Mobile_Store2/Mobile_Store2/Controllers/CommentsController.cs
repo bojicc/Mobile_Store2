@@ -32,7 +32,7 @@ namespace Mobile_Store2.Controllers
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Comments == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -78,7 +78,7 @@ namespace Mobile_Store2.Controllers
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Comments == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -133,7 +133,7 @@ namespace Mobile_Store2.Controllers
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Comments == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -155,10 +155,6 @@ namespace Mobile_Store2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Comments == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Comment'  is null.");
-            }
             var comment = await _context.Comments.FindAsync(id);
             if (comment != null)
             {
@@ -171,7 +167,7 @@ namespace Mobile_Store2.Controllers
 
         private bool CommentExists(int id)
         {
-            return (_context.Comments?.Any(e => e.CommnetId == id)).GetValueOrDefault();
+            return _context.Comments.Any(e => e.CommnetId == id);
         }
     }
 }
