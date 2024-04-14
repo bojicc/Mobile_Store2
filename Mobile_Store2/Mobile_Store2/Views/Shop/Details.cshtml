@@ -1,5 +1,4 @@
-﻿@using Mobile_Store2.Data.Models;
-@model Phone
+﻿@model Mobile_Store2.Data.Models.Phone;
 
 @* <h2>@Model.Model</h2>
 <p>@Model.Description</p>
@@ -21,11 +20,38 @@
 <h2>@Model.Name</h2>
 
 <div>
-    <img src="placeholder_image_url" alt="@Model.Name" style="max-width: 300px; max-height: 300px;" />
+    <img src="@Model.Picture" alt="@Model.Name" class="text-center" style="max-width: 300px; max-height: 300px;" />
 </div>
 
 <div>
     <p>@Model.Description</p>
+    <p>Operation System: @Model.OperationSystem</p>
     <p>Price: @Model.Price.ToString("C")</p>
     <p>Quantity in stock: @Model.Quantity</p>
 </div>
+
+<a href="@Url.Action("Index", "Shop")" class="btn btn-primary">Back to shop</a>
+
+<br />
+<br />
+<br />
+<hr />
+<h4>Comments:</h4>
+@if (Model.Comments != null)
+{
+    @foreach (var item in Model.Comments)
+    {
+        <div style="border: 1px solid black; border-radius:10px;" class="mb-3 p-3">
+            <p>@item.Content</p>
+            <h6 class="text-muted">@item.User.UserName, @item.CreatedDate </h6>
+        </div>
+    }
+}
+
+<form asp-controller="Shop" asp-action="AddComment" method="post">
+    <div class="form-group">
+        <input type="hidden" name="phoneId" , value="@Model.PhoneId" />
+        <textarea class="form-control" id="content" name="content" rows="4" placeholder="Write Comment:"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success mt-3">Submit</button>
+</form>

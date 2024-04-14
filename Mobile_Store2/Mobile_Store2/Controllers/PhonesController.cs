@@ -57,7 +57,7 @@ namespace Mobile_Store2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PhoneId,Name,Description,Price,Quantity")] Phone phone)
+        public async Task<IActionResult> Create([Bind("PhoneId,Name,Description,Price,Quantity,Picture,OperationSystem")] Phone phone)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace Mobile_Store2.Controllers
         // GET: Phones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Phones == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -89,7 +89,7 @@ namespace Mobile_Store2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PhoneId,Name,Description,Price,Quantity")] Phone phone)
+        public async Task<IActionResult> Edit(int id, [Bind("PhoneId,Name,Description,Price,Quantity,Picture,OperationSystem")] Phone phone)
         {
             if (id != phone.PhoneId)
             {
@@ -122,7 +122,7 @@ namespace Mobile_Store2.Controllers
         // GET: Phones/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Phones == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -142,23 +142,19 @@ namespace Mobile_Store2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Phones == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Phones'  is null.");
-            }
             var phone = await _context.Phones.FindAsync(id);
             if (phone != null)
             {
                 _context.Phones.Remove(phone);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PhoneExists(int id)
         {
-          return (_context.Phones?.Any(e => e.PhoneId == id)).GetValueOrDefault();
+            return _context.Phones.Any(e => e.PhoneId == id);
         }
     }
 }
