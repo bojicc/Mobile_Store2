@@ -218,5 +218,22 @@ namespace Mobile_Store2.Controllers
         {
             return _context.Orders.Any(e => e.OrderId == id);
         }
+
+        //public async Task<IActionResult> MarkAsShipped(int orderId)
+        //{
+        //    var order = await _context.Orders.FindAsync(orderId);
+        //    if (order == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    order.Shipped = true;
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction("Index", "Shop", new { id = order.OrderId });
+
+        //    //return RedirectToAction(nameof(Index));
+        //    //return RedirectToAction("Index", "Shop", new { id = order.OrderId });
+
+        //}
     }
 }

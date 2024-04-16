@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mobile_Store2.Data;
 
@@ -11,9 +12,11 @@ using Mobile_Store2.Data;
 namespace Mobile_Store2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416163026_AddedShippedToOrder")]
+    partial class AddedShippedToOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,7 +297,7 @@ namespace Mobile_Store2.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"));
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("PhoneId")
@@ -433,19 +436,15 @@ namespace Mobile_Store2.Data.Migrations
 
             modelBuilder.Entity("Mobile_Store2.Data.Models.OrderItem", b =>
                 {
-                    b.HasOne("Mobile_Store2.Data.Models.Order", "Order")
+                    b.HasOne("Mobile_Store2.Data.Models.Order", null)
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.HasOne("Mobile_Store2.Data.Models.Phone", "Phone")
                         .WithMany()
                         .HasForeignKey("PhoneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Phone");
                 });

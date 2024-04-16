@@ -63,8 +63,6 @@ C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\De
 C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\Debug\net7.0\Mobile_Store2.AssemblyInfoInputs.cache
 C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\Debug\net7.0\Mobile_Store2.AssemblyInfo.cs
 C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\Debug\net7.0\Mobile_Store2.csproj.CoreCompileInputs.cache
-C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\Debug\net7.0\Mobile_Store2.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\Debug\net7.0\Mobile_Store2.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\Debug\net7.0\Mobile_Store2.RazorAssemblyInfo.cache
 C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\Debug\net7.0\Mobile_Store2.RazorAssemblyInfo.cs
 C:\Users\Bojić\Desktop\Mobile_Store2 Project\Mobile_Store2\Mobile_Store2\obj\Debug\net7.0\staticwebassets\msbuild.Mobile_Store2.Microsoft.AspNetCore.StaticWebAssets.props

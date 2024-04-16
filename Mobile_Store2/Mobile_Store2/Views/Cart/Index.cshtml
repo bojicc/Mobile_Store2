@@ -1,4 +1,5 @@
-﻿@model List<Mobile_Store2.Data.Models.OrderItem>
+﻿@using Mobile_Store2.Data.Models;
+@model List<Mobile_Store2.Data.Models.OrderItem>
 
 <h2>Cart</h2>
 
@@ -46,10 +47,10 @@
 
 @if (Model.Any())
 {
-    <form asp-action="Checkout" method="post">
+    @* <form asp-action="Checkout" method="post">
         <a href="@Url.Action("Index", "Checkout")" class="btn btn-success">Checkout</a> <br />
         
-    </form>
+    </form> *@
 }
 else
 {
@@ -58,6 +59,51 @@ else
 <br>
 <a href="@Url.Action("Index", "Shop")" class="btn btn-primary">Continue Shopping</a>
 
+
+
+﻿<form class="row g-3">
+    <div class="col-md-4">
+        <label for="validationDefault01" class="form-label">First name</label>
+        <input type="text" class="form-control" id="validationDefault01" value="" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault02" class="form-label">Last name</label>
+        <input type="text" class="form-control" id="validationDefault02" value="" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefaultUsername" class="form-label">Username</label>
+        <input type="text" class="form-control" id="validationDefaultUsername" aria-describedby="inputGroupPrepend2" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault03" class="form-label">City</label>
+        <input type="text" class="form-control" id="validationDefault03" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault04" class="form-label">State</label>
+        <select class="form-select" id="validationDefault04" required>
+            <option selected disabled value="">Choose...</option>
+            <option>...</option>
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault05" class="form-label">Zip</label>
+        <input type="text" class="form-control" id="validationDefault05" required>
+    </div>
+    <div class="col-12">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+            <label class="form-check-label" for="invalidCheck2">
+                Agree to terms and conditions
+            </label>
+        </div>
+    </div>
+    <div class="col-12">
+        <form asp-action="MarkAsShipped" asp-controller="Cart" method="post">
+            <input type="hidden" name="orderId" value="@ViewBag.OrderId" />
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    </div>
+</form>
 
 @if (TempData["ErrorMessage"] != null)
 {

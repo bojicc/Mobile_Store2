@@ -16,6 +16,8 @@ namespace Mobile_Store2.Data.Models
         [Required]
         public DateTime CreateDate { get; set; } = DateTime.UtcNow;
 
+        public bool Shipped { get; set; }
+
         public List<OrderItem>? OrderItems { get; set; }
     }
 }

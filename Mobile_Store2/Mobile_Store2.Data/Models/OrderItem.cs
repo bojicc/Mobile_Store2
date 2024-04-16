@@ -12,6 +12,8 @@ namespace Mobile_Store2.Data.Models
         [Key]
         public int OrderItemId { get; set; }
 
+        public int OrderId { get; set; }
+
         [Required]
         public int PhoneId { get; set; }
 
@@ -22,5 +24,6 @@ namespace Mobile_Store2.Data.Models
         public decimal UnitPrice { get; set; }
 
         public Phone Phone { get; set; }
+        public Order Order { get; set; }
     }
 }

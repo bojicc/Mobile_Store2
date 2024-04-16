@@ -69,6 +69,11 @@ namespace Mobile_Store2.Controllers
                 else
                 {
                     activeOrder.OrderItems.Add(new OrderItem { PhoneId = phoneId, Quantity = quantity, Phone = phone });
+                    if (quantity > 4)
+                    {
+                        orderItem.UnitPrice = phone.Price * 0.8; // 20% popust
+                    }
+                    activeOrder.OrderItems.Add(orderItem);
                 }
                 //phone.Quantity -= quantity;
                 await _context.SaveChangesAsync();
@@ -160,5 +165,24 @@ namespace Mobile_Store2.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> MarkAsShipped(int orderId)
+        {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            order.Shipped = true;
+
+            ViewBag.OrderId =  order.OrderId;
+            await _context.SaveChangesAsync();
+            //return RedirectToAction("Index", "Shop");
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Shop", new { id = order.OrderId });
+
+        }
+
     }
 }

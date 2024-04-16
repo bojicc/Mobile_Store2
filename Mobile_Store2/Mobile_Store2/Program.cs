@@ -15,9 +15,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
-
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -96,29 +93,23 @@ using (var scope = app.Services.CreateScope())
         await userManager.AddToRoleAsync(user, "Admin");
     }
 }
-//if (!await roleManager.RoleExistsAsync("Admin"))
-//{
-//    var adminRole = new IdentityRole("Admin");
-//    await roleManager.CreateAsync(adminRole);
-//}
 
-//string adminUserName = "admin";
-//string adminEmail = "admin@example.com";
-//string adminPassword = "Admin.123";
+app.Use(async (context, next) =>
+{
+    await next();
 
-//var adminUser = await userManager.FindByEmailAsync(adminEmail);
-//if (adminUser == null)
-//{
-//    adminUser = new ApplicationUser
-//    {
-//        UserName = adminUserName,
-//        Email = adminEmail
-//    };
-//    await userManager.CreateAsync(adminUser, adminPassword);
-//    await userManager.AddToRoleAsync(adminUser, "Admin");
-//}
+    var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
+    var user = await userManager.GetUserAsync(context.User);
 
-
+    if (user != null && !await userManager.IsInRoleAsync(user, "User"))
+    {
+        var roles = await userManager.GetRolesAsync(user);
+        if (!roles.Contains("Admin"))
+        {
+            await userManager.AddToRoleAsync(user, "User");
+        }
+    }
+});
 
 app.MapControllerRoute(
 name: "default",
