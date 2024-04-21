@@ -19,7 +19,9 @@ namespace Mobile_Store2.Data.Models
         [Display(Name = "Operation System")]
         public string OperationSystem { get; set; }
 
+
         public string Picture { get; set; }
+
 
         [Required]
         public string Description { get; set; }
@@ -31,6 +33,6 @@ namespace Mobile_Store2.Data.Models
         public int Quantity { get; set; }
 
 
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
     }
 }

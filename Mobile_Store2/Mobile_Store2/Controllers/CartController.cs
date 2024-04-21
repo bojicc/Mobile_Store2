@@ -69,11 +69,7 @@ namespace Mobile_Store2.Controllers
                 else
                 {
                     activeOrder.OrderItems.Add(new OrderItem { PhoneId = phoneId, Quantity = quantity, Phone = phone });
-                    if (quantity > 4)
-                    {
-                        orderItem.UnitPrice = phone.Price * 0.8; // 20% popust
-                    }
-                    activeOrder.OrderItems.Add(orderItem);
+
                 }
                 //phone.Quantity -= quantity;
                 await _context.SaveChangesAsync();
@@ -166,22 +162,33 @@ namespace Mobile_Store2.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> MarkAsShipped(int orderId)
+        public async Task<IActionResult> MarkAsShipped(int orderItemId)
         {
-            var order = await _context.Orders.FindAsync(orderId);
-            if (order == null)
+            var user = await _userManager.GetUserAsync(this.User);
+            var activeOrder = _context.Orders.FirstOrDefault(i => i.UserId == user.Id && i.Shipped == false);
+           
+
+            if (activeOrder != null)
             {
-                return NotFound();
+                activeOrder.Shipped = true;
+                //activeOrder.TotalPrice = price;
+
+                var orderItemsToRemove = _context.OrderItems.Where(item => item.Order.OrderId == activeOrder.OrderId);
+                _context.OrderItems.RemoveRange(orderItemsToRemove);
+                await _context.SaveChangesAsync();
             }
 
-            order.Shipped = true;
+            //var orderItem = await _context.OrderItems.FindAsync(orderItemId);
+            //if (orderItem == null)
+            //{
+            //    return NotFound();
+            //}
 
-            ViewBag.OrderId =  order.OrderId;
-            await _context.SaveChangesAsync();
-            //return RedirectToAction("Index", "Shop");
-            //return RedirectToAction(nameof(Index));
-            return RedirectToAction("Index", "Shop", new { id = order.OrderId });
 
+            //_context.OrderItems.RemoveRange(orderItem);
+            //await _context.SaveChangesAsync();
+
+            return RedirectToAction("Confirm", "Checkout", new { id = orderItemId });
         }
 
     }

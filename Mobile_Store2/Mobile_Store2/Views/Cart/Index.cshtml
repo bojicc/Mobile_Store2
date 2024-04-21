@@ -98,10 +98,23 @@ else
         </div>
     </div>
     <div class="col-12">
-        <form asp-action="MarkAsShipped" asp-controller="Cart" method="post">
-            <input type="hidden" name="orderId" value="@ViewBag.OrderId" />
-            <button class="btn btn-primary" type="submit">Submit</button>
-        </form>
+
+        @* @foreach (var item in Model)
+        {
+            <form asp-action="MarkAsShipped" method="post">
+                <input type="hidden" name="id" value="@item.OrderId" />
+                <button type="submit" class="btn btn-success">Submit Order</button>
+            </form>
+        } *@
+        @foreach(var item in Model)
+        {
+            <form asp-action="MarkAsShipped" method="post">
+                <input type="hidden" name="orderItemId" value="@item.OrderItemId" />
+
+            </form>
+        }
+        <button type="submit" class="btn btn-success" asp-action="MarkAsShipped">Submit Order</button>
+
     </div>
 </form>
 
